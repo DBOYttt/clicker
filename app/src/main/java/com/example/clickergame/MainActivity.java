@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 count++;
-                clickCounter.setText("Kliknięcia: " + count);
+                clickCounter.setText("Klikniecia: " + count);
                 changeImage();
                 dbHelper.updateClickCount(count); // Aktualizuje licznik w bazie danych
             }
