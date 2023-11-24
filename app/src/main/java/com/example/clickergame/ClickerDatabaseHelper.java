@@ -2,6 +2,7 @@ package com.example.clickergame;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -39,5 +40,25 @@ public class ClickerDatabaseHelper extends SQLiteOpenHelper {
         clickValues.put("COUNT", count);
         db.update("CLICKS", clickValues, "_id = ?", new String[] {"1"});
     }
+    public void purchaseUpgrade() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues upgradeValues = new ContentValues();
+        upgradeValues.put("UPGRADE", 1); // 1 oznacza, że ulepszenie zostało zakupione
+        db.update("CLICKS", upgradeValues, "_id = ?", new String[]{"1"});
+    }
+
+    public boolean isUpgradePurchased() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("CLICKS", new String[]{"UPGRADE"}, "_id = ?", new String[]{"1"}, null, null, null);
+        boolean isPurchased = false;
+
+        if (cursor.moveToFirst()) {
+            int upgradeIndex = cursor.getColumnIndex("UPGRADE");
+            isPurchased = cursor.getInt(upgradeIndex) == 1;
+        }
+        cursor.close();
+        return isPurchased;
+    }
+
 }
 
